@@ -1,7 +1,7 @@
 # task-todo
 a sample API program using mongo db and Node js 
 
-# The Task-Todo Api Consist of 3 Section
+# The Task-Todo Api 
 
 Section 1 :
 
