@@ -31,15 +31,21 @@ router.get('/tasks', auth, async (req, res) => {
 
 
 // delete a task ...
-router.delete('/tasks/:id', async (req, res) => {
-  const _id = req.params.id
-  try {
-      var child  = await ChildTask.find({ParentTask : req.params.id})
+// router.delete('/tasks/:id', async (req, res) => {
+//   const _id = req.params.id
+//   try {
+//       var child  = await ChildTask.find({ParentTask : req.params.id})
+//       child.forEach((child)=>{
+//           if(child.state === "Pending" || child.state === "Completed"){
+//             Task.remove({_id});
+//             res.send("task removed..")
+//           }
+//       })
       
-  } catch (e) {
-      res.status(500).send()
-  }
-})
+//   } catch (e) {
+//       res.status(500).send()
+//   }
+// })
 
 module.exports = router
 

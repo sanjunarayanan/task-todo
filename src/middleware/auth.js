@@ -14,7 +14,7 @@ try {
 
   const token = req.header('Authorization').replace('Bearer ', '')
   // the server can verify the toekn by using verify method by passing the SECREAT .. Here Secreate is "inapptestapi"
-  const decoded = jwt.verify(token, 'inapptestapi')
+  const decoded = jwt.verify(token, process.env.JWT_SECRET)
   const user = await User.findOne({ _id: decoded._id, 'tokens.token':token })
   if (!user) {
     throw new Error()
