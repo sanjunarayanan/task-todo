@@ -30,22 +30,47 @@ router.get('/tasks', auth, async (req, res) => {
 })
 
 
-// delete a task ...
-// router.delete('/tasks/:id', async (req, res) => {
-//   const _id = req.params.id
-//   try {
-//       var child  = await ChildTask.find({ParentTask : req.params.id})
-//       child.forEach((child)=>{
-//           if(child.state === "Pending" || child.state === "Completed"){
-//             Task.remove({_id});
-//             res.send("task removed..")
-//           }
-//       })
-      
-//   } catch (e) {
-//       res.status(500).send()
-//   }
-// })
+
+// update parent task 
+
+router.patch('/tasks/:id', auth, async (req, res) => {
+    const updates = Object.keys(req.body)
+    const allowedUpdates = ['name', 'state','completionDate']
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
+
+    if (!isValidOperation) {
+        return res.status(400).send({ error: 'Invalid updates!' })
+    }
+
+    try {
+        const task = await Task.findOne({ _id: req.params.id, owner: req.user._id})
+
+        if (!task) {
+            return res.status(404).send()
+        }
+
+        updates.forEach((update) => task[update] = req.body[update])
+        await task.save()
+        res.send(task)
+    } catch (e) {
+        res.status(400).send(e)
+    }
+})
+
+router.delete('/tasks/:id', async (req, res) => {
+    try {
+        const task = await Task.findByIdAndDelete(req.params.id)
+        if (!task) {
+            res.status(404).send()
+        }
+        res.send(task)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+
+
 
 module.exports = router
 
