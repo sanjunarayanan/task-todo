@@ -57,19 +57,29 @@ router.patch('/tasks/:id', auth, async (req, res) => {
     }
 })
 
-router.delete('/tasks/:id', async (req, res) => {
+
+router.delete('/tasks/:id', auth , async (req, res) => {
     try {
-        const task = await Task.findByIdAndDelete(req.params.id)
-        if (!task) {
-            res.status(404).send()
+        const childs  = await ChildTask.find({ParentTask:req.params.id})
+        let count = 0;
+        childs.forEach((child)=>{
+            if(child.state ==="In-Progress"){
+                count++;
+            }
+        })
+        if(count===0){
+            const task = await Task.findByIdAndDelete(req.params.id)
+                if (!task) {
+                    res.status(404).send()
+                }
+                res.send(task)
+        }else {
+            res.send("can not delete")
         }
-        res.send(task)
     } catch (e) {
         res.status(500).send()
     }
 })
-
-
 
 
 module.exports = router

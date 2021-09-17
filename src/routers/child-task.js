@@ -20,7 +20,6 @@ router.post('/child-task', auth, async (req, res) => {
 router.get('/child-task', auth, async (req, res) => {
   try {
       const childs =  await ChildTask.find({});
-      console.log(childs)
       res.send(childs)
   } catch (e) {
       res.status(500).send()

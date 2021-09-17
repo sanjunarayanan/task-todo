@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
-
-const ChildTask = mongoose.model('ChildTask', {
-    name: {
+const ChildTaskSchema = new mongoose.Schema(
+    {
+      name: {
         type: String,
         required: true,
         trim: true
@@ -19,6 +19,10 @@ const ChildTask = mongoose.model('ChildTask', {
         required: true,
         ref : 'Task'
     },
-})
+    }
 
+)
+
+
+const ChildTask = mongoose.model('ChildTask', ChildTaskSchema)
 module.exports = ChildTask
